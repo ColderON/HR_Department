@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Username:" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" FontSize="15"/>
+        <Label x:Name="dsfs" Content="Username:" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" FontSize="15"/>
         <TextBox x:Name="tbUsrName" Grid.Column="1" Grid.Row="0" Margin="5" FontSize="15"/>
         <Label Content="Password:" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" FontSize="15"/>
         <PasswordBox x:Name="tbPsswd" Grid.Column="1" Grid.Row="1" Margin="5" FontSize="15"/>
