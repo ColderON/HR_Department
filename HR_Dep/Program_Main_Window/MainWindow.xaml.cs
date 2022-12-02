@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Sign_In
+namespace Program_Main_Window
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

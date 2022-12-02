@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sign_In", "Sign_In\Sign_In.csproj", "{841E2803-44BB-45EF-8A31-33970A17B20E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sign_In", "Sign_In\Sign_In.csproj", "{841E2803-44BB-45EF-8A31-33970A17B20E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{006AFF56-4C44-412A-A803-F9B949D14C27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{841E2803-44BB-45EF-8A31-33970A17B20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{841E2803-44BB-45EF-8A31-33970A17B20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{841E2803-44BB-45EF-8A31-33970A17B20E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006AFF56-4C44-412A-A803-F9B949D14C27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006AFF56-4C44-412A-A803-F9B949D14C27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006AFF56-4C44-412A-A803-F9B949D14C27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006AFF56-4C44-412A-A803-F9B949D14C27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

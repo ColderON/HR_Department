@@ -1,0 +1,69 @@
+﻿<Page x:Class="Sign_In.Page_NewEmloyee"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Sign_In"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Page_NewEmloyee" Loaded="Page_Loaded">
+
+    <DockPanel Background="WhiteSmoke">
+        
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+                <TextBlock Text="First Name:" Margin="5"/>
+                <TextBlock Text="Last Name:" Margin="5" />
+                <TextBlock Text="Date of birth:" Margin="5"/>
+                <TextBlock Text="Department:" Margin="5"/>
+                <TextBlock Text="Position:" Margin="5"/>
+                <TextBlock Text="Trainee:" Margin="5"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <TextBox Name="tbFirstName" Width="150" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+                <TextBox Name="tbLastName" Width="150" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+                <DatePicker Name="dpDateOfBirth" Width="150" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+                <ComboBox Name="cbDepartment" Width="150" HorizontalAlignment="Left" Margin="0,5,0,0" SelectionChanged="cbDepartment_SelectionChanged"/>
+                <ComboBox Name="cbPosition" Width="150" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+                <CheckBox x:Name="checkTrainee" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <Label Content="Photo:" Margin="5"/>
+                <Button Name="btnImage" Width="120" Height="150" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnImage_Click">
+                    <StackPanel>
+                        <Image Name="imagePicture"/>
+                        <TextBlock x:Name="clicktoupload" Text="Click to Upload"/>
+                    </StackPanel>
+                </Button>                
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="3">
+                <TextBlock Text="Comment:" Margin="5"/>
+                <TextBox x:Name="tbComment" Height="150" Margin="5" TextChanged="tbComment_TextChanged"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel DockPanel.Dock="Top">
+            <Button Name="btnAdd" Content="Add" Margin="10" Click="btnAdd_Click"/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Top">
+            <Label x:Name="tbSuccessfullyAdded" FontSize="15" Margin="10" Foreground="Green" Height="30" HorizontalAlignment="Center" Visibility="Visible"/>
+        </StackPanel>
+
+    </DockPanel>
+</Page>

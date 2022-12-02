@@ -1,0 +1,33 @@
+﻿<Window x:Class="Sign_In.MainWindow_1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sign_In"
+        mc:Ignorable="d"
+        Title="HR Department Beta v1.0" Height="650" Width="1000" Loaded="Window_Loaded">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="3"
+                Background="WhiteSmoke">
+
+            <Grid Background="AliceBlue" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnNewEmpl" Grid.Column="0" Content="New Emloyee" BorderBrush="LightGray" Width="100" Height="30" HorizontalAlignment="Left" Margin="10" Click="btnNewEmpl_Click"/>
+                <Button x:Name="btnShowEmpl" Grid.Column="1" Content="Show Emloyees" BorderBrush="LightGray" Width="100" Height="30" HorizontalAlignment="Left" Margin="10" Click="btnShowEmpl_Click"/>
+            </Grid>
+        </Border>
+         
+       
+        <Grid>
+            <Frame x:Name="Main" NavigationUIVisibility="Hidden" />
+        </Grid>
+    </DockPanel> 
+    
+</Window>
