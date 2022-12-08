@@ -28,7 +28,6 @@ namespace Sign_In
     public partial class Page_Emloyees : Page
     {
         IDbConnection? conn;
-        byte[]? imageData;
 
         public Page_Emloyees()
         {
@@ -59,25 +58,15 @@ namespace Sign_In
                 BIG_Helper.FillJobOrdersList(conn);
 
                 cbDepartment.ItemsSource = BIG_Helper.departmentsList;
-                //TODO
-                Dispatcher.BeginInvoke(new Action(() =>
-                {                    
-                    tbEmloyeesCount.Text = BIG_Helper.employeesList.Count(e => e.StatusId == 1).ToString();
-                    tbDismissedCount.Text = BIG_Helper.employeesList.Count(e => e.StatusId == 2).ToString();
-                    if(rbEmloyees.IsChecked== true)
-                    {
-                        lbListOf.ItemsSource = BIG_Helper.employeesList.Where(e => e.StatusId == 1);
-                        rbEmloyees.IsChecked = false;
-                        rbVacancies.IsChecked = false;
-                        LoadDefaultPageEmloyees();
-                    }
-                    if(rbDismissed.IsChecked== true)
-                    {
-                        lbListOf.ItemsSource = BIG_Helper.employeesList.Where(e=> e.StatusId == 2);
-                        LoadDefaultPageEmloyees();
-                    }
-                }));
-                //LoadDefaultPageEmloyees();
+
+                tbEmloyeesCount.Text = BIG_Helper.employeesList.Count(e => e.StatusId == 1).ToString();
+                tbDismissedCount.Text = BIG_Helper.employeesList.Count(e => e.StatusId == 2).ToString();
+                lbListOf.ItemsSource = BIG_Helper.employeesList.Where(e => e.StatusId == 1);
+
+                rbEmloyees.IsChecked = true;
+                rbVacancies.IsChecked = false;
+                rbDismissed.IsChecked = false;
+                LoadDefaultPageEmloyees();
             }
             catch (DbException ex)
             {
@@ -85,22 +74,23 @@ namespace Sign_In
             }
         }
 
-        public ImageSource LoadImageSourceFromBytes(byte[] imageBytes)
-        {
-            BitmapImage bitmapImage = new BitmapImage();
+        //public ImageSource LoadImageSourceFromBytes(byte[] imageBytes)
+        //{
+        //    BitmapImage bitmapImage = new BitmapImage();
 
-            using (MemoryStream imageStream = new MemoryStream(imageBytes))
-            {
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = imageStream;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-            }
+        //    using (MemoryStream imageStream = new MemoryStream(imageBytes))
+        //    {
+        //        bitmapImage.BeginInit();
+        //        bitmapImage.StreamSource = imageStream;
+        //        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+        //        bitmapImage.EndInit();
+        //    }
 
-            bitmapImage.Freeze();
+        //    bitmapImage.Freeze();
 
-            return bitmapImage;
-        }
+        //    return bitmapImage;
+        //}
+
         private static BitmapImage LoadImage(byte[] imageData)
         {
             if (imageData == null || imageData.Length == 0) return null;
@@ -226,38 +216,68 @@ namespace Sign_In
                 btnChangeData.IsEnabled = true;
                 btnDismiss.IsEnabled = true;
             }
-            //BIG_Helper.FillPhotos(conn);
+            
+            if (lbListOf.SelectedItem == null){
 
-            if ((lbListOf.SelectedItem as Employee).ImageBytes == null){ 
                 imagePicture.Source = LoadImage(Resource_Images.noPhoto);
+                tbFirstName.Text = String.Empty;
+                tbLastName.Text = String.Empty;
+                dpDateOfBirth.Text = String.Empty;
+
+                cbDepartment.SelectedIndex = -1;
+                cbPosition.SelectedIndex = -1;
             }
-            else { imagePicture.Source = LoadImage((lbListOf.SelectedItem as Employee).ImageBytes);}
 
-            tbFirstName.Text = (lbListOf.SelectedItem as Employee).FirstName;
-            tbLastName.Text = (lbListOf.SelectedItem as Employee).LastName;
-            dpDateOfBirth.Text = (lbListOf.SelectedItem as Employee).DateOfBirth.ToString();
-
-            cbDepartment.SelectedIndex = ((int)(lbListOf.SelectedItem as Employee).DepId-1);
-             
-            foreach (var item in cbPosition.Items)
+            else if (lbListOf.SelectedItem != null && (lbListOf.SelectedItem as Employee).ImageBytes == null)
             {
-                if((item as Position).Id  == ((int)(lbListOf.SelectedItem as Employee).PosId)){
-                    cbPosition.SelectedItem = item;
-                    break;
+                imagePicture.Source = LoadImage(Resource_Images.noPhoto);
+                tbFirstName.Text = (lbListOf.SelectedItem as Employee).FirstName;
+                tbLastName.Text = (lbListOf.SelectedItem as Employee).LastName;
+                dpDateOfBirth.Text = (lbListOf.SelectedItem as Employee).DateOfBirth.ToString();
+
+                cbDepartment.SelectedIndex = ((int)(lbListOf.SelectedItem as Employee).DepId - 1);
+
+                foreach (var item in cbPosition.Items)
+                {
+                    if ((item as Position).Id == ((int)(lbListOf.SelectedItem as Employee).PosId))
+                    {
+                        cbPosition.SelectedItem = item;
+                        break;
+                    }
+                }
+            }
+
+            else {
+                imagePicture.Source = LoadImage((lbListOf.SelectedItem as Employee).ImageBytes);
+                tbFirstName.Text = (lbListOf.SelectedItem as Employee).FirstName;
+                tbLastName.Text = (lbListOf.SelectedItem as Employee).LastName;
+                dpDateOfBirth.Text = (lbListOf.SelectedItem as Employee).DateOfBirth.ToString();
+
+                cbDepartment.SelectedIndex = ((int)(lbListOf.SelectedItem as Employee).DepId - 1);
+
+                foreach (var item in cbPosition.Items)
+                {
+                    if ((item as Position).Id == ((int)(lbListOf.SelectedItem as Employee).PosId))
+                    {
+                        cbPosition.SelectedItem = item;
+                        break;
+                    }
                 }
             }
             //GC.Collect(2, GCCollectionMode.Forced);
         }
         private void cbDepartment_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            cbPosition.Items.Clear();
-            foreach (var item in BIG_Helper.positionsList)
-            {
-                if(item.DepId == (cbDepartment.SelectedItem as Department).Id)
+            if(lbListOf.SelectedItem != null) {
+                cbPosition.Items.Clear();
+                foreach (var item in BIG_Helper.positionsList)
                 {
-                    cbPosition.Items.Add(item);
+                    if (item.DepId == (cbDepartment.SelectedItem as Department).Id)
+                    {
+                        cbPosition.Items.Add(item);
+                    }
                 }
-            }
+            }            
         }
 
         private void SaveChangedData()
@@ -319,12 +339,32 @@ namespace Sign_In
 
         private void rbEmloyees_Click(object sender, RoutedEventArgs e)
         {
+            btnChangeData.Visibility = Visibility.Visible;
+            btnAddChangeImage.Visibility = Visibility.Visible;
+            btnDismiss.Visibility = Visibility.Visible;
 
+            lbListOf.SelectedItem = null;
+            lbListOf.ItemsSource = BIG_Helper.employeesList.Where(e => e.StatusId == 1);
+
+            rbEmloyees.IsChecked = true;
+            rbVacancies.IsChecked = false;
+            rbDismissed.IsChecked = false;
+            LoadDefaultPageEmloyees();
         }
 
         private void rbDismissed_Click(object sender, RoutedEventArgs e)
         {
+            btnChangeData.Visibility = Visibility.Hidden;
+            btnAddChangeImage.Visibility = Visibility.Hidden;
+            btnDismiss.Visibility = Visibility.Hidden;
 
+            lbListOf.SelectedItem = null;
+            lbListOf.ItemsSource = BIG_Helper.employeesList.Where(e => e.StatusId == 2);
+
+            rbEmloyees.IsChecked = false;
+            rbVacancies.IsChecked = false;
+            rbDismissed.IsChecked = true;
+            LoadDefaultPageEmloyees();
         }
     }
 }

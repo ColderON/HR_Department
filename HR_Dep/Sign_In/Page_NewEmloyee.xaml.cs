@@ -28,8 +28,6 @@ namespace Sign_In
     public partial class Page_NewEmloyee : Page
     {
         IDbConnection? conn;
-        //BIG_Helper BIG_Helper = new BIG_Helper();
-        byte[]? imageData;
 
         public Page_NewEmloyee()
         {
