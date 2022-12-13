@@ -27,6 +27,9 @@ namespace Sign_In
         public MainWindow_1()
         {
             InitializeComponent();
+            BIG_Helper.CreateConnection();
+            try { BIG_Helper.conn.Open(); }
+            catch (DbException ex) { MessageBox.Show(ex.Message); }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

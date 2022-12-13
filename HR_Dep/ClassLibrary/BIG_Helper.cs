@@ -14,6 +14,7 @@ namespace Sign_In;
 
 public static class BIG_Helper
 {
+    public static IDbConnection? conn;
     public static List<Department> departmentsList= new List<Department>();
     public static List<Position> positionsList = new List<Position>();
     public static List<Status> statusList = new List<Status>();
@@ -21,6 +22,17 @@ public static class BIG_Helper
     public static List<Job_Order> job_OrdersList = new List<Job_Order>();
 
 
+    public static void CreateConnection()
+    {
+        conn = new SqlConnection(new SqlConnectionStringBuilder
+        {
+            DataSource = "localhost",
+            InitialCatalog = "HR_Department_SQL",
+            IntegratedSecurity = true,
+            MultipleActiveResultSets = true,
+            TrustServerCertificate = true,
+        }.ConnectionString);
+    }
     public static void FillDepartments(IDbConnection connection)
     {
         departmentsList.Clear();

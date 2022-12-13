@@ -26,8 +26,7 @@ namespace Sign_In
     /// Interaction logic for Page_NewEmloyee.xaml
     /// </summary>
     public partial class Page_NewEmloyee : Page
-    {
-        IDbConnection? conn;
+    {      
 
         public Page_NewEmloyee()
         {
@@ -35,23 +34,13 @@ namespace Sign_In
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            conn = new SqlConnection(new SqlConnectionStringBuilder
-            {
-                DataSource = "localhost",
-                InitialCatalog = "HR_Department_SQL",
-                IntegratedSecurity = true,
-                MultipleActiveResultSets = true,
-                TrustServerCertificate = true,
-            }.ConnectionString);
-
+        { 
             try
             {
-                conn.Open();
-                BIG_Helper.FillDepartments(conn);
-                BIG_Helper.FillPositions(conn);
-                BIG_Helper.FillEmployees(conn);
-                BIG_Helper.FillJobOrdersList(conn);
+                BIG_Helper.FillDepartments(BIG_Helper.conn);
+                BIG_Helper.FillPositions(BIG_Helper.conn);
+                BIG_Helper.FillEmployees(BIG_Helper.conn);
+                BIG_Helper.FillJobOrdersList(BIG_Helper.conn);
                 cbDepartment.ItemsSource = BIG_Helper.departmentsList;
             }
             catch (DbException ex)
@@ -92,7 +81,7 @@ namespace Sign_In
             if (IsAddable())
             {
                 AddNewEmployee();
-                CreateJobOrderAutom(conn);
+                CreateJobOrderAutom(BIG_Helper.conn);
                 MakePageClear();
             }
             else { MessageBox.Show("Please, fill in all fileds", "Error!"); }
@@ -101,7 +90,7 @@ namespace Sign_In
         private void AddNewEmployee()
         {
             btnAdd.IsEnabled = false;
-            IDbCommand cmd = conn.CreateCommand();
+            IDbCommand cmd = BIG_Helper.conn.CreateCommand();
 
             string firstName = tbFirstName.Text;
             string lastName = tbLastName.Text;

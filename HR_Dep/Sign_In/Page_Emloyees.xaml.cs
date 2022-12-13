@@ -27,8 +27,6 @@ namespace Sign_In
     /// </summary>
     public partial class Page_Emloyees : Page
     {
-        IDbConnection? conn;
-
         public Page_Emloyees()
         {
             InitializeComponent();
@@ -40,22 +38,13 @@ namespace Sign_In
             btnChangeData.IsEnabled = false;
             btnAddChangeImage.IsEnabled = false;
             btnDismiss.IsEnabled = false;
-            conn = new SqlConnection(new SqlConnectionStringBuilder
-            {
-                DataSource = "localhost",
-                InitialCatalog = "HR_Department_SQL",
-                IntegratedSecurity = true,
-                MultipleActiveResultSets = true,
-                TrustServerCertificate = true,
-            }.ConnectionString);
 
             try
-            {
-                conn.Open();
-                BIG_Helper.FillDepartments(conn);
-                BIG_Helper.FillPositions(conn);
-                BIG_Helper.FillEmployees(conn);
-                BIG_Helper.FillJobOrdersList(conn);
+            {  
+                BIG_Helper.FillDepartments(BIG_Helper.conn);
+                BIG_Helper.FillPositions(BIG_Helper.conn);
+                BIG_Helper.FillEmployees(BIG_Helper.conn);
+                BIG_Helper.FillJobOrdersList(BIG_Helper.conn);
 
                 cbDepartment.ItemsSource = BIG_Helper.departmentsList;
 
@@ -167,7 +156,7 @@ namespace Sign_In
             stream.Flush();
             stream.Seek(0, SeekOrigin.Begin);
             
-            IDbCommand cmd = conn.CreateCommand();
+            IDbCommand cmd = BIG_Helper.conn.CreateCommand();
             string FileName = $"{tbFirstName.Text}{tbLastName.Text}_Photo_{DateTime.Now}";
             long emplId = (lbListOf.SelectedItem as Employee).Id;
 
@@ -200,7 +189,7 @@ namespace Sign_In
             MessageBoxResult result = MessageBox.Show("Sure?\nDismiss this Emloyee","Confirm dismissal", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                IDbCommand cmd = conn.CreateCommand();
+                IDbCommand cmd = BIG_Helper.conn.CreateCommand();
                 cmd.CommandText = $"Update Employees Set Status_Id = 2 where Id = {(lbListOf.SelectedItem as Employee).Id}";
                 cmd.ExecuteNonQuery();
                 //TODO
@@ -284,18 +273,18 @@ namespace Sign_In
         {
             if(IsEnabled)
             {
-                if ((lbListOf.SelectedItem as Employee).FirstName != tbFirstName.Text) { BIG_Helper.ChangeFName(conn, tbFirstName.Text, (lbListOf.SelectedItem as Employee).Id); }
-                if ((lbListOf.SelectedItem as Employee).LastName != tbLastName.Text) { BIG_Helper.ChangeLName(conn, tbLastName.Text, (lbListOf.SelectedItem as Employee).Id); }
+                if ((lbListOf.SelectedItem as Employee).FirstName != tbFirstName.Text) { BIG_Helper.ChangeFName(BIG_Helper.conn, tbFirstName.Text, (lbListOf.SelectedItem as Employee).Id); }
+                if ((lbListOf.SelectedItem as Employee).LastName != tbLastName.Text) { BIG_Helper.ChangeLName(BIG_Helper.conn, tbLastName.Text, (lbListOf.SelectedItem as Employee).Id); }
                 if ((lbListOf.SelectedItem as Employee).DateOfBirth != DateTime.Parse(dpDateOfBirth.Text))
                 {
-                    BIG_Helper.ChangeBirthday(conn, DateTime.Parse(dpDateOfBirth.Text), (lbListOf.SelectedItem as Employee).Id);
+                    BIG_Helper.ChangeBirthday(BIG_Helper.conn, DateTime.Parse(dpDateOfBirth.Text), (lbListOf.SelectedItem as Employee).Id);
                 }
 
                 if ((lbListOf.SelectedItem as Employee).DepId != (cbDepartment.SelectedItem as Department).Id ||
                     (lbListOf.SelectedItem as Employee).PosId != (cbPosition.SelectedItem as Position).Id &&
                     cbDepartment.SelectedIndex >= 0 && cbPosition.SelectedIndex >= 0)
                 {
-                    BIG_Helper.ChangeDepartmentAndOrPosition(conn, (cbDepartment.SelectedItem as Department).Id,
+                    BIG_Helper.ChangeDepartmentAndOrPosition(BIG_Helper.conn, (cbDepartment.SelectedItem as Department).Id,
                         (cbPosition.SelectedItem as Position).Id, (lbListOf.SelectedItem as Employee).Id);
                 }
             }           
@@ -310,7 +299,7 @@ namespace Sign_In
         }
         public bool HasNoPhoto(long emloyeeId)
         {
-            IDbCommand cmd = conn.CreateCommand();
+            IDbCommand cmd = BIG_Helper.conn.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "HasNoPhoto";
 
